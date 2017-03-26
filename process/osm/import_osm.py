@@ -2,13 +2,11 @@ import sys
 import json
 import osmium
 
+from tools.map_tools import tag
 from tools.utilities import dump
 
 ways = []
 nodes = {}
-
-def tag(entity,name):
-    return entity.tags[name] if (name in entity.tags) else None
 
 class Node():
     def __init__(self,ref,location):
