@@ -1,5 +1,8 @@
-from osm.import_osm import main as import_osm
-from osm.scenery_search import main as scenery_search
+from osm.import_osm import import_osm
+from osm.export_osm import export_osm
+from osm.scenery_search import scenery_search
 
 if (__name__ == "__main__"):
-    scenery_search()
+    # import_osm()
+    # scenery_search()
+    export_osm()

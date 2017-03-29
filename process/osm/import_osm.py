@@ -2,8 +2,8 @@ import sys
 import json
 import osmium
 
-from tools.map_tools import tag
 from tools.utilities import dump
+from tools.osmium_tools import tag,read_osm_file
 
 ways = []
 nodes = {}
@@ -67,23 +67,10 @@ class RouteHandler(osmium.SimpleHandler):
         for node in way.update_nodes(locations):
             node.ways.append(way.id)
 
-def main():
-
-    idx = osmium.index.create_map('sparse_file_array,data/node-cache.nodecache')
-    locations = osmium.NodeLocationsForWays(idx)
-    locations.ignore_errors()
+def import_osm():
 
     osm_file = 'data/greater-london-latest.osm.pbf'
-
-    node_reader = osmium.io.Reader(osm_file, osmium.osm.osm_entity_bits.NODE)
-    osmium.apply(node_reader, locations)
-    node_reader.close()
-
-    handler = RouteHandler(idx)
-
-    way_reader = osmium.io.Reader(osm_file, osmium.osm.osm_entity_bits.WAY)
-    osmium.apply(way_reader, locations, handler)
-    way_reader.close()
+    handler = read_osm_file(osm_file,RouteHandler)
 
     dump(nodes,'data/nodes.json')    
     dump(ways,'data/ways.json') 
